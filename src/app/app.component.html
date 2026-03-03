@@ -1,0 +1,31 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+  
+  <!-- Tabs to switch between Signals and Observables -->
+  <div class="tabs">
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab() === 'signals'"
+      (click)="switchTab('signals')"
+    >
+      Signals Pattern
+    </button>
+    <button 
+      class="tab-button" 
+      [class.active]="activeTab() === 'observables'"
+      (click)="switchTab('observables')"
+    >
+      Observables Pattern
+    </button>
+  </div>
+
+  <!-- Signals Component -->
+  <div *ngIf="activeTab() === 'signals'">
+    <app-product-list></app-product-list>
+  </div>
+
+  <!-- Observables Component -->
+  <div *ngIf="activeTab() === 'observables'">
+    <app-product-list-observable></app-product-list-observable>
+  </div>
+</div>

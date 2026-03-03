@@ -1,0 +1,53 @@
+<div class="section">
+  <h2>Product List (Observable Pattern)</h2>
+  
+  <!-- Filter Controls -->
+  <div class="filter-controls">
+    <button class="toggle-button" (click)="toggleInStockFilter()">
+      {{ getShowOnlyInStockValue() ? 'Show All Products' : 'Show Only In Stock' }}
+    </button>
+    
+    <input 
+      type="text" 
+      placeholder="Search products..." 
+      (input)="updateFilter($any($event).target.value)"
+      [value]="getFilterValue()"
+      class="search-input"
+    />
+    
+    <button class="toggle-button clear-btn" (click)="clearFilter()" *ngIf="getFilterValue()">
+      Clear Filter
+    </button>
+  </div>
+
+  <!-- Display products using async pipe -->
+  <ng-container *ngIf="(filteredProducts$ | async) as products">
+    <ng-container *ngIf="products.length > 0; else noProducts">
+      <div 
+        *ngFor="let product of products"
+        class="item"
+      >
+        <div class="item-title">{{ product.name }}</div>
+        <div class="item-description">{{ product.description }}</div>
+        <div class="item-details">
+          <span class="item-price">${{ product.price }}</span>
+          <span class="stock-status" [class.in-stock]="product.inStock">
+            {{ product.inStock ? '✓ In Stock' : '✗ Out of Stock' }}
+          </span>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- No products template -->
+    <ng-template #noProducts>
+      <div class="empty-message">
+        No products found. Try adjusting your filters.
+      </div>
+    </ng-template>
+
+    <!-- Display count info -->
+    <div class="info-footer" *ngIf="products.length > 0">
+      Showing {{ products.length }} product(s)
+    </div>
+  </ng-container>
+</div>
